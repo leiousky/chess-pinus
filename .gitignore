@@ -1,0 +1,7 @@
+*/**/.vscode/
+*/**/dist/
+.idea/
+node_modules/
+package-lock.json
+config.development.js
+logs

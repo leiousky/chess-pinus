@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="robot" type="NodeJSConfigurationType" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/game-server/dist/robot">
+    <method v="2">
+      <option name="TypeScript.Before.Run" enabled="true" FAIL_ON_ERROR="true" CONFIG_PATH="D:\dev\chess-pinus\game-server\tsconfig.json" />
+    </method>
+  </configuration>
+</component>

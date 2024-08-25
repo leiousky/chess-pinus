@@ -1,0 +1,43 @@
+{
+  "name": "chess",
+  "version": "0.0.1",
+  "private": false,
+  "bin": {
+    "$": "./dist/bin/app.js"
+  },
+  "main": "./dist/app",
+  "scripts": {
+    "start": "npm run build && cd dist &&  node app",
+    "build": "tsc && node copy",
+    "eslint": "eslint app --ext .ts"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcrypt-nodejs": "^0.0.3",
+    "bluebird": "^3.5.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "ioredis": "^5.4.1",
+    "luxon": "^3.4.4",
+    "mongoose": "^8.5.1",
+    "node-fetch": "^2.7.0",
+    "pinus": "1.7.1",
+    "redis": "^4.6.15",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.19",
+    "@types/luxon": "^3.4.2",
+    "@types/node": "^20.14.11",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "acorn": "^8.12.1",
+    "acorn-typescript": "^1.4.13",
+    "cpy": "^8.1.0",
+    "eslint": "^8.57.0",
+    "pinus-robot": "^1.7.1",
+    "pinus-robot-plugin": "^1.7.1",
+    "typescript": "^4.9.5"
+  }
+}

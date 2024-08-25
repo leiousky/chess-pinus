@@ -1,0 +1,114 @@
+{
+  "development": {
+    "connector": [
+      {
+        "id": "connector-server-1",
+        "host": "127.0.0.1",
+        "port": 5010,
+        "clientHost": "127.0.0.1",
+        "clientPort": 4010,
+        "frontend": true
+      }
+    ],
+    "hall": [
+      {
+        "id": "hall-1",
+        "host": "127.0.0.1",
+        "port": 6001
+      }
+    ],
+    "game": [
+      {
+        "id": "game-1",
+        "host": "127.0.0.1",
+        "port": 7001
+      }
+    ],
+    "http": [
+      {
+        "id": "http-1",
+        "host": "127.0.0.1",
+        "port": 8001,
+        "clientHost": "0.0.0.0",
+        "clientPort": 13009
+      }
+    ],
+    "center": [
+      {
+        "id": "center",
+        "host": "127.0.0.1",
+        "port": 9001
+      }
+    ],
+    "robot": [
+      {
+        "id": "robot",
+        "host": "127.0.0.1",
+        "port": 9101
+      }
+    ],
+    "arena": [
+      {
+        "id": "arena",
+        "host": "127.0.0.1",
+        "port": 9201
+      }
+    ]
+  },
+  "production": {
+    "connector": [
+      {
+        "id": "connector-server-1",
+        "host": "127.0.0.1",
+        "port": 5010,
+        "clientHost": "111.231.21.40",
+        "clientPort": 3015,
+        "frontend": true
+      }
+    ],
+    "hall": [
+      {
+        "id": "hall-1",
+        "host": "127.0.0.1",
+        "port": 6001
+      }
+    ],
+    "game": [
+      {
+        "id": "game-1",
+        "host": "127.0.0.1",
+        "port": 7001
+      }
+    ],
+    "http": [
+      {
+        "id": "http-1",
+        "host": "127.0.0.1",
+        "port": 8001,
+        "clientHost": "0.0.0.0",
+        "clientPort": 3014
+      }
+    ],
+    "center": [
+      {
+        "id": "center",
+        "host": "127.0.0.1",
+        "port": 9001
+      }
+    ],
+    "robot": [
+      {
+        "id": "robot",
+        "host": "127.0.0.1",
+        "port": 9101
+      }
+    ],
+    "arena": [
+      {
+        "id": "arena",
+        "host": "127.0.0.1",
+        "port": 9201
+      }
+    ]
+  }
+}
