@@ -1535,7 +1535,7 @@ export abstract class BaseRoomFrame implements IRoomFrame {
             case RoomSettlementMethod.clubGold:
                 return await this.setClubGold(userInfo)
             default:
-                console.error('take chip from roomSettlementMethod not supported: ', this.gameRule.roomSettlementMethod)
+                console.error('take chip from roomSettlementMethod not supported: "' + this.gameRule.roomSettlementMethod + '"')
         }
         return false
     }
