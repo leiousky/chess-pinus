@@ -5,7 +5,7 @@ import {userModel} from '../../../dao/models/user'
 import {RpcApi} from '../../../api/rpc'
 import {dispatch} from '../../../util/dispatcher'
 import services from '../../../services'
-import {UserStatus} from '../../../constants/game'
+import {RoomSettlementMethod, UserStatus} from '../../../constants/game'
 import {MatchManager} from '../domain/matchDomain'
 import {IPrivateRule} from '../../../types/interfaceApi'
 import {ClubMemberModel} from "../../../dao/models/clubMember";
@@ -134,6 +134,10 @@ export class Handler {
                 preBetCount: 0,
                 maxTake: 400,
             }
+        }
+        if (!rule.roomSettlementMethod) {
+            // 默认设为金豆房
+            rule.roomSettlementMethod = RoomSettlementMethod.gold
         }
         const model = await userModel.findOne({uid: session.uid})
         if (!model) {
