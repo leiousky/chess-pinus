@@ -94,7 +94,7 @@ export class Handler {
         rule.roomSettlementMethod = RoomSettlementMethod.clubGold
         const gameServer = dispatch(services.utils.getRandomNum(0, pinus.app.getServersByType('game').length - 1).toString(),
             pinus.app.getServersByType('game'))
-        const userInfo = services.user.buildGameRoomUserInfo(model, -1, UserStatus.none)
+        const userInfo = services.user.buildGameRoomUserInfo(model, -1, UserStatus.none, member.clubGold)
         await RpcApi.createClubRoom(gameServer.id, userInfo, model.frontendId, rule)
         return CreateClubResp.ok()
     }
@@ -294,7 +294,7 @@ export class Handler {
      * @param msg
      * @param session
      */
-    async getCoinRecord(msg: IGetCoinRecordReq, session: FrontendSession):Promise<IGetCoinRecordResp> {
+    async getCoinRecord(msg: IGetCoinRecordReq, session: FrontendSession): Promise<IGetCoinRecordResp> {
         const records = await ClubCoinRecordModel.getRecord(msg.clubShortId, msg.count, msg.lastRecord)
         // 查找用户
         const uidList: number[] = []

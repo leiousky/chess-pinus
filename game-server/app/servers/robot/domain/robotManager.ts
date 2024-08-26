@@ -169,7 +169,8 @@ export class RobotManager {
             nickname: this.phoneTitleArr[services.utils.getRandomNum(0, this.phoneTitleArr.length - 1)] + services.utils.getRandomNum(10000000, 99999999),
             avatar: 'UserInfo/head_' + services.utils.getRandomNum(0, 15),
             robot: true,
-            gold: 0
+            gold: 0,
+            clubGold: 0,
         }
         return userInfo
     }

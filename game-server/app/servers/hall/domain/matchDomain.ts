@@ -81,14 +81,14 @@ export class MatchManager {
             const userData = records[i]
             if (userData.gold < gameTypeInfo.goldLowerLimit) continue
             if (!userData.frontendId) continue
-            roomUserInfoArr.push(services.user.buildGameRoomUserInfo(records[i], -1, UserStatus.none))
+            roomUserInfoArr.push(services.user.buildGameRoomUserInfo(records[i], -1, UserStatus.none, 0))
         }
         // 创建房间
         const gameServer = dispatch(services.utils.getRandomNum(0, pinus.app.getServersByType('game').length - 1).toString(), pinus.app.getServersByType('game'))
         await RpcApi.createMatchRoom(gameServer.id, roomUserInfoArr, gameTypeInfo)
     }
 
-    // 加入匹配队列 
+    // 加入匹配队列
     async entryMatchList(uid: number, gameTypeId: string) {
         console.info('entryMatchList uid=' + uid + ', gameTypeID=' + gameTypeId)
         // 检查用户是否在匹配列表中，则不能重复匹配
@@ -153,13 +153,13 @@ export class MatchManager {
 
     async createRoom(userData: HydratedDocument<IUserModel>, gameTypeInfo: IGameTypeInfo, gameRule: any) {
         const gameServer = dispatch(services.utils.getRandomNum(0, pinus.app.getServersByType('game').length - 1).toString(), pinus.app.getServersByType('game'))
-        return RpcApi.createRoom(gameServer.id, services.user.buildGameRoomUserInfo(userData, -1, UserStatus.none), userData.frontendId, gameRule, gameTypeInfo)
+        return RpcApi.createRoom(gameServer.id, services.user.buildGameRoomUserInfo(userData, -1, UserStatus.none, 0), userData.frontendId, gameRule, gameTypeInfo)
     }
 
     async joinRoom(userData: HydratedDocument<IUserModel>, roomId: string) {
         const gameServers = pinus.app.getServersByType('game')
         const server = dispatch(roomId, gameServers)
-        return RpcApi.joinRoom(server.id, services.user.buildGameRoomUserInfo(userData, -1, UserStatus.none), userData.frontendId, roomId, 0)
+        return RpcApi.joinRoom(server.id, services.user.buildGameRoomUserInfo(userData, -1, UserStatus.none, 0), userData.frontendId, roomId, 0)
     }
 
     async startMatch(userData: HydratedDocument<IUserModel>, gameTypeId: string) {

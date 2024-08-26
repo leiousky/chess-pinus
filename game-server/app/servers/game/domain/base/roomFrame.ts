@@ -435,7 +435,7 @@ export abstract class BaseRoomFrame implements IRoomFrame {
             $inc: {gold: goldExpress}
         }
         const record = await userModel.findOneAndUpdate({uid: user.uid}, updateData)
-        await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(record, chairId, user.userStatus), false)
+        await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(record, chairId, user.userStatus, 0), false)
     }
 
     // 扣钻石
@@ -449,7 +449,7 @@ export abstract class BaseRoomFrame implements IRoomFrame {
             $inc: {diamond: diamondExpress}
         }
         const record = await userModel.findOneAndUpdate({uid: user.uid}, updateData)
-        await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(record, chairId, user.userStatus), false)
+        await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(record, chairId, user.userStatus, 0), false)
     }
 
     // 游戏结束相关
@@ -586,7 +586,7 @@ export abstract class BaseRoomFrame implements IRoomFrame {
             const record = await userModel.findOneAndUpdate({uid: data.uid}, data)
             if (this.userArr[record.uid]) {
                 const user = this.userArr[record.uid]
-                await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(record, user.chairId, user.userStatus), this.gameRule.roomType !== RoomType.hundred)
+                await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(record, user.chairId, user.userStatus, 0), this.gameRule.roomType !== RoomType.hundred)
             }
             if (record.frontendId) {
                 await this.updateUserDataNotify(record.uid.toString(), record.frontendId, {
@@ -638,16 +638,16 @@ export abstract class BaseRoomFrame implements IRoomFrame {
             const userRecord = await UserModel.getUserById(data.uid)
             const record = await ClubMember.getClubMember(this.gameRule.clubShortId, data.uid)
             record.addClubGold(data.score)
+            await record.save()
             if (this.userArr[userRecord.uid]) {
                 const user = this.userArr[userRecord.uid]
-                await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(userRecord, user.chairId, user.userStatus), this.gameRule.roomType !== RoomType.hundred)
+                await this.updateRoomUserInfo(services.user.buildGameRoomUserInfo(userRecord, user.chairId, user.userStatus, record.m.clubGold), this.gameRule.roomType !== RoomType.hundred)
             }
             if (userRecord.frontendId) {
                 await this.updateUserDataNotify(userRecord.uid.toString(), userRecord.frontendId, {
                     clubCoin: record.m.clubGold
                 })
             }
-            await record.save()
         }
         // const userGameRecordArr = []
         // for (let j = 0; j < saveDataArr.length; ++j) {
@@ -699,6 +699,7 @@ export abstract class BaseRoomFrame implements IRoomFrame {
                 chairId,
                 userStatus: UserStatus.none,
                 takeChip: 0,
+                clubGold: userInfo.clubGold,
             }
             this.userArr[userInfo.uid] = user
             this.currentUserCount++
@@ -1556,8 +1557,8 @@ export abstract class BaseRoomFrame implements IRoomFrame {
 
     async setClubGold(userInfo: IUserInfo) {
         // 带上所有金币
-        const member = await ClubMember.getClubMember(this.gameRule.clubShortId, userInfo.uid)
-        userInfo.takeChip = member.m.clubGold
+        // const member = await ClubMember.getClubMember(this.gameRule.clubShortId, userInfo.uid)
+        userInfo.takeChip = userInfo.clubGold
         return true
     }
 

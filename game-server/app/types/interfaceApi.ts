@@ -91,6 +91,8 @@ export interface IUserInfo {
     robot: boolean
     // 使用的 gold
     takeChip: number
+    // 战队金币
+    clubGold: number
 }
 
 // // 简易 model 信息

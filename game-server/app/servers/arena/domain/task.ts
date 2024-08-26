@@ -368,7 +368,7 @@ export class ArenaTask {
                 console.error(`user ${userList[i].uid} login userData`)
                 continue
             }
-            roomUserInfoArr.push(services.user.buildGameRoomUserInfo(userList[i], -1, UserStatus.none))
+            roomUserInfoArr.push(services.user.buildGameRoomUserInfo(userList[i], -1, UserStatus.none, 0))
         }
         // 添加机器人
         for (const uid of Object.keys(this.robotList)) {

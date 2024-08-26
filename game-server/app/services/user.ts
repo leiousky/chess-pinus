@@ -45,7 +45,7 @@ export default class UserService extends BaseService {
         return record
     }
 
-    buildGameRoomUserInfo(user: HydratedDocument<IUserModel>, chairId: number, userStatus: UserStatus) {
+    buildGameRoomUserInfo(user: HydratedDocument<IUserModel>, chairId: number, userStatus: UserStatus, clubGold: number) {
         const userInfo: IUserInfo = {
             avatar: user.avatar,
             diamond: user.diamond,
@@ -58,6 +58,7 @@ export default class UserService extends BaseService {
             uid: user.uid,
             userStatus: userStatus || UserStatus.none,
             takeChip: 0,
+            clubGold,
         }
         return userInfo
     }

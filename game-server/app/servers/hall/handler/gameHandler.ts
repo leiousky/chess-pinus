@@ -8,7 +8,7 @@ import services from '../../../services'
 import {UserStatus} from '../../../constants/game'
 import {MatchManager} from '../domain/matchDomain'
 import {IPrivateRule} from '../../../types/interfaceApi'
-import clubManger from '../../../dao/club/manager'
+import {ClubMemberModel} from "../../../dao/models/clubMember";
 
 export default function (app: Application) {
     return new Handler(app)
@@ -30,12 +30,14 @@ export class Handler {
         }
         // 俱乐部 id
         const clubShortId: number = Number(msg.clubShortId)
+        let clubGold = 0
         if (clubShortId) {
             // 检查俱乐部
-            const club = await clubManger.queryClub(clubShortId)
-            if (!club) {
+            const member = await ClubMemberModel.getMemberByClubShortId(clubShortId, uid)
+            if (!member) {
                 return {code: errorCode.clubNotExists}
             }
+            clubGold = member.clubGold
         }
         // 检查房间是否解散
         const isExists = await RpcApi.isRoomExists(newRoomId)
@@ -57,7 +59,7 @@ export class Handler {
             }
         }
         const gameServer = dispatch(newRoomId, this.app.getServersByType('game'))
-        return RpcApi.joinRoom(gameServer.id, services.user.buildGameRoomUserInfo(model, -1, UserStatus.none), model.frontendId, newRoomId, clubShortId)
+        return RpcApi.joinRoom(gameServer.id, services.user.buildGameRoomUserInfo(model, -1, UserStatus.none, clubGold), model.frontendId, newRoomId, clubShortId)
     }
 
     // 匹配房间
@@ -140,7 +142,7 @@ export class Handler {
         // 分配 game server
         const gameServer = dispatch(services.utils.getRandomNum(0, pinus.app.getServersByType('game').length - 1).toString(),
             pinus.app.getServersByType('game'))
-        const userInfo = services.user.buildGameRoomUserInfo(model, -1, UserStatus.none)
+        const userInfo = services.user.buildGameRoomUserInfo(model, -1, UserStatus.none, 0)
         await RpcApi.createPrivateRoom(gameServer.id, userInfo, model.frontendId, rule)
         return {code: errorCode.ok}
     }
