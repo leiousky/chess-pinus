@@ -209,7 +209,7 @@ export class Handler {
      * @param session
      */
     async setMemberAdmin(msg: ISetMemberAdminReq, session: FrontendSession): Promise<ISetMemberAdminResp> {
-        return await clubManager.setMemberAdmin(msg.memberId, Number(session.uid), !!msg.isAdminOrNot)
+        return await clubManager.setMemberAdmin(msg.memberId, Number(session.uid), !!msg.isAdmin)
     }
 
     /**

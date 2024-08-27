@@ -145,7 +145,7 @@ export interface ISetMemberAdminReq {
     // memberId
     memberId: string
     // 是否设为管理员
-    isAdminOrNot: boolean
+    isAdmin: boolean
 }
 
 export interface ISetMemberAdminResp {
