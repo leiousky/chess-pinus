@@ -635,7 +635,7 @@ export abstract class BaseRoomFrame implements IRoomFrame {
             const data = dataArr[i]
             const user = this.userArr[data.uid]
             if (!user || user.robot) continue
-            const userRecord = await UserModel.getUserById(data.uid)
+            const userRecord = await UserModel.getUserByUid(data.uid)
             const record = await ClubMember.getClubMember(this.gameRule.clubShortId, data.uid)
             record.addClubGold(data.score)
             await record.save()
