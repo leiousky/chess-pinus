@@ -2,9 +2,10 @@ import {Application} from 'pinus'
 import {GlobalEnum} from '../../../constants/global'
 import {RoomManager} from '../domain/roomManager'
 import errorCode from '../../../constants/errorCode'
-import {IArenaRule, IClubRule, IGameRule, IGameTypeInfo, IPrivateRule, IUserInfo} from '../../../types/interfaceApi'
+import {IArenaRule, IGameRule, IGameTypeInfo, IPrivateRule, IUserInfo} from '../../../types/interfaceApi'
 import {RoomType} from '../../../constants/game'
 import {IClubRoomInfo} from '../../../types/hall/club'
+import {IClubRule} from "../../../dao/models/clubRule";
 
 export default function (app: Application) {
     return new RoomRemoter(app)

@@ -152,7 +152,7 @@ export class RoomManager {
                 })
                 list.push({
                     playerList: playerList,
-                    rule: services.apiConvert.toClubRule(room.gameRule, room.gameTypeInfo, room.roomId)
+                    rule: services.apiConvert.toClubRuleInfo(room.gameRule, room.gameTypeInfo, room.roomId)
                 })
             }
         }

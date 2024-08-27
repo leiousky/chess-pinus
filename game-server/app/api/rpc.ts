@@ -1,7 +1,8 @@
 import {pinus} from 'pinus'
 import {dispatch} from '../util/dispatcher'
-import {IArenaRule, IClubRule, IGameRule, IGameTypeInfo, IPrivateRule, IUserInfo} from '../types/interfaceApi'
+import {IArenaRule, IGameRule, IGameTypeInfo, IPrivateRule, IUserInfo} from '../types/interfaceApi'
 import {IClubRoomInfo} from '../types/hall/club'
+import {IClubRule} from "../dao/models/clubRule";
 
 export class RpcApi {
 

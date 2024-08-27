@@ -1,7 +1,8 @@
 import {BaseHandlerResp} from '../base'
-import {IClubRule} from '../interfaceApi'
-import {HydratedDocument} from 'mongoose'
+import {HydratedDocument, Types} from 'mongoose'
 import {IClubCoinRecord} from '../../dao/models/clubCoinRecord'
+import {IClubRuleInfo} from "../interfaceApi";
+import {GameRoomStartType, RoomSettlementMethod} from "../../constants/game";
 
 export interface IAddToBlackListReq {
     // 俱乐部id
@@ -79,7 +80,7 @@ export interface IGetClubRoomsResp {
 
 export interface IClubRoomInfo {
     // 房间规则
-    rule: IClubRule
+    rule: IClubRuleInfo
     // 玩家信息
     playerList: number[]
 }
@@ -312,8 +313,10 @@ export class QueryClubResp extends BaseHandlerResp {
 
 
 export interface ICreateRoomReq {
-    // 规则
-    gameRule: IClubRule
+    // 规则 id
+    ruleId: string
+    // 俱乐部 id
+    clubShortId: number
 }
 
 export interface ICreateRoomResp {
@@ -402,4 +405,89 @@ export class GetCoinRecordResp extends BaseHandlerResp {
         }
         return super.ok(list)
     }
+}
+
+export interface IClubRuleReq {
+    // rule id
+    ruleId: string
+    // 规则名
+    name: string
+    // 房间类型
+    kind: number,
+    // 钻石房费
+    diamondCost: number
+    // 房间算分方式
+    roomSettlementMethod: RoomSettlementMethod
+    // 游戏开始方式
+    gameRoomStartType: GameRoomStartType
+    // 是否房主支付房费
+    isOwnerPay: boolean
+    // 最少玩家人数
+    minPlayerCount: number
+    // 最多玩家人数
+    maxPlayerCount: number
+    // 最大局数
+    maxDrawCount: number
+    // 参数
+    parameters: {
+        // 小盲注
+        blindBetCount: number,
+        // 底注
+        preBetCount: number,
+        // 最大筹码
+        maxTake: number
+    },
+}
+
+export interface IAddOrUpdateRuleReq {
+    // 规则
+    rule: IClubRuleReq
+    // 俱乐部 id
+    clubShortId: number
+}
+
+export interface IAddOrUpdateRuleResp {
+    // 错误码
+    code: number
+    // 消息
+    msg: any
+}
+
+// 添加更新规则
+export class AddOrUpdateRuleResp extends BaseHandlerResp {
+}
+
+export interface IDelRuleReq {
+    // rule id
+    ruleId: string
+}
+
+export interface IDelRuleResp {
+    // 错误码
+    code: number
+    // 消息
+    msg: any
+}
+
+// 删除规则
+export class DelRuleResp extends BaseHandlerResp {
+}
+
+
+export interface IGetRulesReq {
+    // 俱乐部 id
+    clubShortId: number
+    // 游戏类型
+    kind: number
+}
+
+export interface IGetRulesResp {
+    // 错误码
+    code: number
+    // 消息
+    msg: IClubRuleInfo[]
+}
+
+// 获取所有规则
+export class GetRulesResp extends BaseHandlerResp {
 }

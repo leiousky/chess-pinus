@@ -8,17 +8,17 @@ import {ClubMemberModel} from '../models/clubMember'
 import {UserModel} from '../models/user'
 import {PushApi} from '../../api/push'
 import {
-    AddClubGoldResp,
+    AddClubGoldResp, AddOrUpdateRuleResp,
     AddToBlackListResp, ClubRequestAgreeOrNotResp,
     CreateClubResp,
     DeleteClubJoinRequestResp,
     DissolveClubResp, ExitClubByAdminResp,
-    GetClubRequestListResp, GetMembersByClubShortIdResp,
-    IAddToBlackListResp, IClubRequestAgreeOrNotResp,
+    GetClubRequestListResp, GetMembersByClubShortIdResp, GetRulesResp, IAddOrUpdateRuleResp,
+    IAddToBlackListResp, IClubRequestAgreeOrNotResp, IClubRuleReq,
     ICreateClubResp,
     IDeleteClubJoinRequestResp,
     IDissolveClubResp, IExitClubByAdminResp,
-    IGetMembersByClubShortIdResp,
+    IGetMembersByClubShortIdResp, IGetRulesResp,
     IMyClub,
     INewJoinRequestResp,
     IRemoveFromBlackListResp,
@@ -33,6 +33,8 @@ import {
     UpdateClubMemberCommentResp
 } from '../../types/hall/club'
 import {ClubCoinRecordModel, IClubCoinRecord} from "../models/clubCoinRecord";
+import {ClubRuleModel, IClubRule} from "../models/clubRule";
+import {IClubRuleInfo} from "../../types/interfaceApi";
 
 export class ClubManager {
     // 查找俱乐部
@@ -358,6 +360,56 @@ export class ClubManager {
         club.removeFromBlockList(blockUid)
         await club.save()
         return RemoveFromBlackListResp.ok()
+    }
+
+    // 添加规则
+    async addOrUpdateRule(rule: IClubRuleReq, clubShortId: number, uid: number): Promise<IAddOrUpdateRuleResp> {
+        const club = await Club.getClubByShortId(clubShortId)
+        if (!club) {
+            return AddOrUpdateRuleResp.error(errorCode.clubNotExists)
+        }
+        const member = await ClubMember.getClubMember(clubShortId, uid)
+        if (!member || !member.hasAdminPermission()) {
+            return AddOrUpdateRuleResp.error(errorCode.noPermission)
+        }
+        // 新增规则
+        const m: IClubRule = {
+            name: '',
+            kind: 0,
+            diamondCost: 0,
+            roomSettlementMethod: rule.roomSettlementMethod,
+            gameRoomStartType: rule.gameRoomStartType,
+            isOwnerPay: rule.isOwnerPay,
+            minPlayerCount: rule.minPlayerCount,
+            maxPlayerCount: rule.maxPlayerCount,
+            maxDrawCount: rule.maxDrawCount,
+            clubShortId: clubShortId,
+            clubId: club.m._id,
+            parameters: rule.parameters
+        }
+        await ClubRuleModel.addOrUpdateRule(rule.ruleId, m)
+        return AddOrUpdateRuleResp.ok()
+    }
+
+    async getRules(clubShortId: number, kind: number): Promise<IGetRulesResp> {
+        const rules = await ClubRuleModel.findRules(clubShortId, kind)
+        const list: IClubRuleInfo[] = []
+        for (const r of rules) {
+            list.push({
+                kind: r.kind,
+                diamondCost: r.diamondCost,
+                roomSettlementMethod: r.roomSettlementMethod,
+                gameRoomStartType: r.gameRoomStartType,
+                isOwnerPay: r.isOwnerPay,
+                minPlayerCount: r.minPlayerCount,
+                maxPlayerCount: r.maxPlayerCount,
+                maxDrawCount: r.maxDrawCount,
+                clubShortId: r.clubShortId,
+                roomId: '',
+                parameters: r.parameters
+            })
+        }
+        return GetRulesResp.ok(list)
     }
 }
 

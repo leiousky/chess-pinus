@@ -240,7 +240,7 @@ export interface IArenaRule {
     }
 }
 
-export interface IClubRule {
+export interface IClubRuleInfo {
     // 房间类型
     kind: number,
     // 钻石房费

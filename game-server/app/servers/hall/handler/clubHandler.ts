@@ -5,15 +5,15 @@ import services from '../../../services'
 import {RoomSettlementMethod, UserStatus} from '../../../constants/game'
 import {RpcApi} from '../../../api/rpc'
 import {UserModel, userModel} from '../../../dao/models/user'
-import {IClubRule} from '../../../types/interfaceApi'
 import {ClubMemberModel} from '../../../dao/models/clubMember'
 import clubManager from '../../../dao/club/manager'
 import {
-    CreateClubResp,
+    AddOrUpdateRuleResp,
+    CreateClubResp, DelRuleResp,
     GetClubRoomsResp,
     GetCoinRecordResp,
     IAddClubGoldReq,
-    IAddClubGoldResp,
+    IAddClubGoldResp, IAddOrUpdateRuleReq, IAddOrUpdateRuleResp,
     IAddToBlackListReq,
     IAddToBlackListResp,
     IClubRequestAgreeOrNotReq,
@@ -23,7 +23,7 @@ import {
     ICreateRoomReq,
     ICreateRoomResp,
     IDeleteClubJoinRequestReq,
-    IDeleteClubJoinRequestResp,
+    IDeleteClubJoinRequestResp, IDelRuleReq, IDelRuleResp,
     IDissolveClubReq,
     IDissolveClubResp,
     IExitClubByAdminReq,
@@ -35,7 +35,7 @@ import {
     IGetCoinRecordReq,
     IGetCoinRecordResp,
     IGetMembersByClubShortIdReq,
-    IGetMembersByClubShortIdResp,
+    IGetMembersByClubShortIdResp, IGetRulesReq, IGetRulesResp,
     IMyClubListReq,
     IMyClubListResp,
     INewJoinRequestReq,
@@ -55,6 +55,7 @@ import {
     QueryClubResp
 } from '../../../types/hall/club'
 import {ClubCoinRecordModel} from "../../../dao/models/clubCoinRecord";
+import {ClubRuleModel} from "../../../dao/models/clubRule";
 
 export default function (app: Application) {
     return new Handler(app)
@@ -74,12 +75,17 @@ export class Handler {
     async createRoom(msg: ICreateRoomReq, session: FrontendSession): Promise<ICreateRoomResp> {
         const uid = Number(session.uid)
         // 规则
-        const rule: IClubRule = msg.gameRule
+        const ruleId: string = msg.ruleId
         // 俱乐部 id
-        const clubShortId: number = rule.clubShortId
+        const clubShortId: number = msg.clubShortId
         if (!clubShortId) {
             // 参数错误
             return CreateClubResp.error(errorCode.invalidRequest)
+        }
+        const rule = await ClubRuleModel.getRuleById(ruleId)
+        if (!rule || rule.clubShortId != clubShortId) {
+            // 俱乐部规则错误
+            return CreateClubResp.error(errorCode.clubNotExists)
         }
         const member = await ClubMemberModel.getMemberByClubShortId(clubShortId, uid)
         if (!member) {
@@ -305,5 +311,41 @@ export class Handler {
         const users = await UserModel.getUsersByUidList(uidList)
         const userMap = services.utils.modelArrayToMap(users, 'uid')
         return GetCoinRecordResp.success(userMap, records)
+    }
+
+    /**
+     * 添加更新规则
+     * @param msg
+     * @param session
+     */
+    async addOrUpdateRule(msg: IAddOrUpdateRuleReq, session: FrontendSession):Promise<IAddOrUpdateRuleResp> {
+        const rule = msg.rule
+        const clubShortId = msg.clubShortId
+        const uid = Number(session.uid)
+        if (!services.club.isRuleValid(rule)) {
+            // 参数错误
+            return AddOrUpdateRuleResp.error(errorCode.invalidRequest)
+        }
+        return await clubManager.addOrUpdateRule(rule, clubShortId, uid)
+    }
+
+    /**
+     * 删除规则
+     * @param msg
+     * @param session
+     */
+    async delRule(msg: IDelRuleReq, session: FrontendSession):Promise<IDelRuleResp> {
+        const ruleId = msg.ruleId
+        await ClubRuleModel.delRuleById(ruleId)
+        return DelRuleResp.ok()
+    }
+
+    /**
+     * 获取所有规则
+     * @param msg
+     * @param session
+     */
+    async getRules(msg: IGetRulesReq, session: FrontendSession):Promise<IGetRulesResp> {
+        return await clubManager.getRules(msg.clubShortId, msg.kind)
     }
 }

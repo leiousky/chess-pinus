@@ -1,5 +1,5 @@
 import BaseService from './base'
-import {IBaseRule, IClubRule, IGameTypeInfo} from '../types/interfaceApi'
+import {IBaseRule, IClubRuleInfo, IGameTypeInfo} from '../types/interfaceApi'
 
 // 转换接口
 export default class ApiConvertService extends BaseService {
@@ -8,7 +8,7 @@ export default class ApiConvertService extends BaseService {
     }
 
     // 转为俱乐部规则
-    toClubRule(rule: IBaseRule, gameTypeInfo: IGameTypeInfo, roomId: string): IClubRule {
+    toClubRuleInfo(rule: IBaseRule, gameTypeInfo: IGameTypeInfo, roomId: string): IClubRuleInfo {
         return {
             clubShortId: rule.clubShortId,
             diamondCost: rule.diamondCost,
@@ -20,7 +20,7 @@ export default class ApiConvertService extends BaseService {
             minPlayerCount: rule.minPlayerCount,
             parameters: gameTypeInfo.parameters,
             roomSettlementMethod: rule.roomSettlementMethod,
-            roomId: roomId,
+            roomId,
         }
     }
 }
