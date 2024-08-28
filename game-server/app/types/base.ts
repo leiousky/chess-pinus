@@ -27,8 +27,8 @@ export class BaseHandlerResp {
     }
 
     // 返回成功
-    static ok(msg?: any) {
-        return {code: errorCode.ok, msg}
+    static ok() {
+        return {code: errorCode.ok, msg: null}
     }
 
     // // 响应成功

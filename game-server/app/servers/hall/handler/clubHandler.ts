@@ -154,7 +154,7 @@ export class Handler {
      */
     async myClubList(msg: IMyClubListReq, session: FrontendSession): Promise<IMyClubListResp> {
         const infoList = await clubManager.myClub(Number(session.uid))
-        return MyClubListResp.ok(infoList)
+        return MyClubListResp.success(infoList)
     }
 
     /**

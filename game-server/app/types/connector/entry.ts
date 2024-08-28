@@ -2,6 +2,7 @@ import {BaseHandlerResp} from '../base'
 import services from '../../services'
 import {pinus} from 'pinus'
 import {GlobalEnum} from '../../constants/global'
+import errorCode from "../../constants/errorCode";
 
 // 用户信息
 export interface UserInfo {
@@ -30,6 +31,9 @@ export class EntryResp extends BaseHandlerResp {
             agentProfile: pinus.app.get(GlobalEnum.agentProfitKey),
             gameConfig: pinus.app.get(GlobalEnum.gameConfigKey),
         }
-        return super.ok(msg)
+        return {
+            code: errorCode.ok,
+            msg,
+        }
     }
 }

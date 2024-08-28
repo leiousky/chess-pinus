@@ -3,6 +3,7 @@ import {HydratedDocument, Types} from 'mongoose'
 import {IClubCoinRecord} from '../../dao/models/clubCoinRecord'
 import {IClubRuleInfo} from "../interfaceApi";
 import {GameRoomStartType, RoomSettlementMethod} from "../../constants/game";
+import errorCode from "../../constants/errorCode";
 
 export interface IAddToBlackListReq {
     // 俱乐部id
@@ -89,7 +90,10 @@ export interface IClubRoomInfo {
 export class GetClubRoomsResp extends BaseHandlerResp {
 
     static success(roomList: IClubRoomInfo[]): IGetClubRoomsResp {
-        return super.ok(roomList)
+        return {
+            code: errorCode.ok,
+            msg: roomList
+        }
     }
 }
 
@@ -187,7 +191,10 @@ export interface IGetMemberInfo {
 export class GetMembersByClubShortIdResp extends BaseHandlerResp {
 
     static success(list: IGetMemberInfo[]): IGetMembersByClubShortIdResp {
-        return super.ok(list)
+        return {
+            code: errorCode.ok,
+            msg: list,
+        }
     }
 }
 
@@ -276,7 +283,10 @@ export interface IClubRequestInfo {
 // 俱乐部申请列表
 export class GetClubRequestListResp extends BaseHandlerResp {
     static success(list: IClubRequestInfo[]): IGetClubRequestListResp {
-        return super.ok(list)
+        return {
+            code: errorCode.ok,
+            msg: list,
+        }
     }
 }
 
@@ -355,6 +365,13 @@ export interface IMyClub {
 
 // 我的俱乐部列表
 export class MyClubListResp extends BaseHandlerResp {
+
+    static success(list: IMyClub[]): IMyClubListResp {
+        return {
+            code: errorCode.ok,
+            msg: list
+        }
+    }
 }
 
 
@@ -403,7 +420,10 @@ export class GetCoinRecordResp extends BaseHandlerResp {
                 operatorUid: record.operatorUid,
             })
         }
-        return super.ok(list)
+        return {
+            code: errorCode.ok,
+            msg: list
+        }
     }
 }
 
@@ -490,4 +510,11 @@ export interface IGetRulesResp {
 
 // 获取所有规则
 export class GetRulesResp extends BaseHandlerResp {
+
+    static success(msg: IClubRuleInfo[]): IGetRulesResp {
+        return {
+            code: errorCode.ok,
+            msg,
+        }
+    }
 }

@@ -409,7 +409,7 @@ export class ClubManager {
                 parameters: r.parameters
             })
         }
-        return GetRulesResp.ok(list)
+        return GetRulesResp.success(list)
     }
 }
 
