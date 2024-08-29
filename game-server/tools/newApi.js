@@ -93,6 +93,13 @@ ${addApiRespParameter(apiName)}
 
 // ${apiComment}
 export class ${upperCaseFirstLatter(apiName)}Resp extends BaseHandlerResp {
+
+    static success(): I${upperCaseFirstLatter(apiName)}Resp {
+        return {
+            code: errorCode.ok,
+            msg: null,
+        }
+    }
 }`
     saveFile(typesDir, modName + ".ts", text + newRet)
 }
