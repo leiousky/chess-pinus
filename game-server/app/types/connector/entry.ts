@@ -34,7 +34,7 @@ export class EntryResp extends BaseHandlerResp {
 
     static success(userInfo: any, clubShortIdList: number[]) {
         // 调用基类 static
-        const msg = {
+        const msg: IEntryMsg = {
             userInfo,
             clubShortIdList,
             publicParameter: services.parameter.buildClientParameter(pinus.app.get(GlobalEnum.publicParameterKey)),
