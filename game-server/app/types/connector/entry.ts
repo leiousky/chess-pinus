@@ -22,6 +22,8 @@ export interface IEntryMsg {
     agentProfile: any
     // 俱乐部id
     clubShortIdList: number[]
+    // 游戏配置
+    gameConfig: any
 }
 
 // 返回
