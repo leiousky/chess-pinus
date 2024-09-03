@@ -3,6 +3,7 @@ import services from '../../services'
 import {pinus} from 'pinus'
 import {GlobalEnum} from '../../constants/global'
 import errorCode from "../../constants/errorCode";
+import {finished} from "node:stream";
 
 // 用户信息
 export interface UserInfo {
@@ -21,12 +22,14 @@ export class EntryResp extends BaseHandlerResp {
     gameTypes: any
     // 代理配置
     agentProfile: any
+    // 俱乐部id
+    clubShortIdList: number[]
 
     static success(userInfo: any, clubShortIdList: number[]) {
         // 调用基类 static
         const msg = {
             userInfo,
-            clubShortIdList: [],
+            clubShortIdList,
             publicParameter: services.parameter.buildClientParameter(pinus.app.get(GlobalEnum.publicParameterKey)),
             gameTypes: services.parameter.clientGameTypes(),
             agentProfile: pinus.app.get(GlobalEnum.agentProfitKey),
