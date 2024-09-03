@@ -110,4 +110,9 @@ export class ClubMemberModel {
     static async deleteMembersByClubId(clubId: Types.ObjectId) {
         await clubMemberModel.deleteMany({clubId: clubId})
     }
+
+    // 本人创建的俱乐部
+    static async getOwnClubMember(uid: number) {
+        return clubMemberModel.find({memberUid: uid, isCreator: true})
+    }
 }
