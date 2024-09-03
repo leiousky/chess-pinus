@@ -10,6 +10,7 @@ export default class ApiConvertService extends BaseService {
     // 转为俱乐部规则
     toClubRuleInfo(rule: IBaseRule, gameTypeInfo: IGameTypeInfo, roomId: string): IClubRuleInfo {
         return {
+            ruleId: '',
             clubShortId: rule.clubShortId,
             diamondCost: rule.diamondCost,
             gameRoomStartType: rule.gameRoomStartType,
