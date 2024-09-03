@@ -22,10 +22,11 @@ export class EntryResp extends BaseHandlerResp {
     // 代理配置
     agentProfile: any
 
-    static success(userInfo: any) {
+    static success(userInfo: any, clubShortIdList: number[]) {
         // 调用基类 static
         const msg = {
             userInfo,
+            clubShortIdList: [],
             publicParameter: services.parameter.buildClientParameter(pinus.app.get(GlobalEnum.publicParameterKey)),
             gameTypes: services.parameter.clientGameTypes(),
             agentProfile: pinus.app.get(GlobalEnum.agentProfitKey),

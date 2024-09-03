@@ -7,6 +7,8 @@ import {HydratedDocument} from 'mongoose'
 import {IUserModel} from '../../../dao/models/user'
 import {RpcApi} from '../../../api/rpc'
 import {GlobalEnum} from '../../../constants/global'
+import {ClubMember} from "../../../dao/club/clubMember";
+import {ClubMemberModel} from "../../../dao/models/clubMember";
 
 export class GateManager {
     // 用户离开房间
@@ -53,7 +55,13 @@ export class GateManager {
         }
         // 更新用户信息
         await GateManager.updateUserData(session, user)
-        return EntryResp.success(user)
+        // 获取俱乐部
+        const myClub = await ClubMemberModel.findMemberByUid(uid)
+        const clubShortIdList = []
+        myClub.forEach(value => {
+            clubShortIdList.push(value.clubShortId)
+        })
+        return EntryResp.success(user, clubShortIdList)
     }
 
     // 绑定 uid 失败
