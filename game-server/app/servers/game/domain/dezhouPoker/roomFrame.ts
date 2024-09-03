@@ -42,7 +42,8 @@ function getBaseRule(gameRule: IGameRule, gameTypeInfo: IGameTypeInfo): IBaseRul
         roomSettlementMethod: gameRule.roomSettlementMethod,
         roomType: gameRule.roomType,
         arenaId: gameRule.arenaId,
-        clubShortId: gameRule.clubShortId
+        clubShortId: gameRule.clubShortId,
+        clubRuleId: gameRule.clubRuleId,
     }
 }
 
@@ -65,5 +66,6 @@ function getDefaultDZGoldRule(gameTypeInfo: IGameTypeInfo): IBaseRule {
         roomType: RoomType.normal,
         arenaId: '',
         clubShortId: 0,
+        clubRuleId: '',
     }
 }

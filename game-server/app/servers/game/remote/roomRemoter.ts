@@ -54,6 +54,7 @@ export class RoomRemoter {
             roomSettlementMethod: privateRule.roomSettlementMethod,
             roomType: RoomType.private,
             clubShortId: 0,
+            clubRuleId: '',
         }
 
         const gameTypeInfo: IGameTypeInfo = {
@@ -88,6 +89,7 @@ export class RoomRemoter {
             roomSettlementMethod: arenaRule.roomSettlementMethod,
             roomType: RoomType.arena,
             clubShortId: 0,
+            clubRuleId: '',
         }
 
         const gameTypeInfo: IGameTypeInfo = {
@@ -181,7 +183,7 @@ export class RoomRemoter {
     }
 
     // 创建好友房
-    async createClubRoom(userInfo: IUserInfo, frontendId: string, clubRule: IClubRule) {
+    async createClubRoom(userInfo: IUserInfo, frontendId: string, clubRule: IClubRule, ruleId: string) {
         const gameRule: IGameRule = {
             arenaId: '',
             diamondCost: clubRule.diamondCost,
@@ -191,6 +193,7 @@ export class RoomRemoter {
             roomSettlementMethod: clubRule.roomSettlementMethod,
             roomType: RoomType.club,
             clubShortId: clubRule.clubShortId,
+            clubRuleId: ruleId,
         }
         let parameters = clubRule.parameters
         if (typeof parameters == 'string') {
