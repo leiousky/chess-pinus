@@ -48,6 +48,11 @@ export class ClubManager {
 
     // 新增俱乐部申请
     async newJoinRequest(clubShortId: number, playerUid: number): Promise<INewJoinRequestResp> {
+        // 是否有俱乐部
+        const hasClub = await this.hasClub(playerUid)
+        if (hasClub) {
+            return NewJoinRequestResp.error(errorCode.alreadyInClub)
+        }
         const club = await ClubModel.getClubByShortId(clubShortId)
         if (!club) {
             return NewJoinRequestResp.error(errorCode.clubNotExists)
@@ -97,6 +102,12 @@ export class ClubManager {
         }
         const clubRequest = new ClubRequest(req)
         if (isAgree) {
+            // 检查是否已经进了
+            const hasClub = await this.hasClub(req.playerUid)
+            if (hasClub) {
+                // 对方有俱乐部了
+                return ClubRequestAgreeOrNotResp.error(errorCode.alreadyInClub)
+            }
             // 创建新成员
             await ClubMember.getOrCreateMember(club._id, club.clubShortId, req.playerUid, req.playerId)
             // 删除申请
@@ -112,10 +123,15 @@ export class ClubManager {
 
     // 创建新俱乐部
     async createNewClub(uid: number, clubName: string): Promise<ICreateClubResp> {
-        // TODO 检查能建几个俱乐部
         const user = await UserModel.getUserByUid(uid)
         if (!user) {
             return CreateClubResp.error(errorCode.userNotFound)
+        }
+        // 检查能建几个俱乐部
+        const hasClub = await this.hasClub(uid)
+        if (hasClub) {
+            // 只能进一个
+            return CreateClubResp.error(errorCode.alreadyInClub)
         }
         const club = await Club.clubFromRaw(clubName, user._id, user.uid)
         // 添加 member
@@ -410,6 +426,12 @@ export class ClubManager {
             })
         }
         return GetRulesResp.success(list)
+    }
+
+    // 一个人只能进一个俱乐部
+    async hasClub(uid: number) {
+        const members = await ClubMember.getClubMembersByUid(uid)
+        return members.length > 0;
     }
 }
 
