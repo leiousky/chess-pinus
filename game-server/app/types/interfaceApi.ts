@@ -241,6 +241,8 @@ export interface IArenaRule {
 }
 
 export interface IClubRuleInfo {
+    // 规则 id
+    ruleId: string
     // 房间类型
     kind: number,
     // 钻石房费

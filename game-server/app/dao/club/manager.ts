@@ -402,6 +402,7 @@ export class ClubManager {
         const list: IClubRuleInfo[] = []
         for (const r of rules) {
             list.push({
+                ruleId: r.id,
                 kind: r.kind,
                 diamondCost: r.diamondCost,
                 roomSettlementMethod: r.roomSettlementMethod,
