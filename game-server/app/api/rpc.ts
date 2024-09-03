@@ -92,7 +92,7 @@ export class RpcApi {
         return pinus.app.rpc.game.roomRemoter.createPrivateRoom.to(serverId)(userInfo, frontendId, privateRule)
     }
 
-    // 创建好友房
+    // 创建俱乐部房
     static async createClubRoom(serverId: string, userInfo: IUserInfo, frontendId: string, privateRule: IClubRule) {
         return pinus.app.rpc.game.roomRemoter.createClubRoom.to(serverId)(userInfo, frontendId, privateRule)
     }

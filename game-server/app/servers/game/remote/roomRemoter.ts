@@ -214,7 +214,7 @@ export class RoomRemoter {
             minRobotCount: 0,
             parameters: parameters
         }
-        return this.mgr.createRoom(userInfo, frontendId, gameRule, gameTypeInfo)
+        await this.mgr.createRoom(userInfo, frontendId, gameRule, gameTypeInfo)
     }
 
     // 获取俱乐部

@@ -9,6 +9,7 @@ import errorCode from '../../../constants/errorCode'
 import config = require('../../../../config')
 import {IGameRule, IGameTypeInfo, IUserInfo} from '../../../types/interfaceApi'
 import {IClubRoomInfo} from '../../../types/hall/club'
+import {PushApi} from "../../../api/push";
 
 // 房间管理器
 export class RoomManager {
@@ -72,7 +73,10 @@ export class RoomManager {
             return
         }
         this.roomList[roomId] = roomFrame
-        return roomFrame.userEntryRoom(userInfo, frontendId)
+        await roomFrame.userEntryRoom(userInfo, frontendId)
+        const roomInfo = this.getClubRoom(roomFrame.gameRule.clubShortId)
+        // 推送新房间
+        await PushApi.newClubRoom(userInfo.uid, userInfo.frontendId, roomFrame.gameRule.clubShortId, roomInfo)
     }
 
     async createMatchRoom(userInfoArr: IUserInfo[], gameRule: IGameRule, gameTypeInfo: IGameTypeInfo) {
