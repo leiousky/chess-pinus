@@ -396,6 +396,7 @@ export class ClubManager {
         const m: IClubRule = {
             name: '',
             kind: 0,
+            // TODO 查找房费
             diamondCost: 0,
             roomSettlementMethod: rule.roomSettlementMethod,
             gameRoomStartType: rule.gameRoomStartType,

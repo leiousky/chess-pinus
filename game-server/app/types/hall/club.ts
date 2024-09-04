@@ -432,7 +432,7 @@ export interface IClubRuleReq {
     ruleId: string
     // 规则名
     name: string
-    // 房间类型
+    // 游戏类型
     kind: number,
     // 钻石房费
     diamondCost: number

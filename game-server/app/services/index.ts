@@ -10,6 +10,7 @@ import TimeService from './time'
 import PaypalService from './paypal'
 import ApiConvertService from './apiConvert'
 import ClubService from "./club";
+import RankService from "./rank";
 
 export interface ServiceType {
     // 文件名：函数名
@@ -23,6 +24,7 @@ export interface ServiceType {
     paypal: PaypalService
     apiConvert: ApiConvertService
     club: ClubService
+    rank: RankService
 }
 
 // 导出 service 目录下的所有 service
@@ -41,6 +43,7 @@ function loadService() {
             paypal: undefined,
             apiConvert: undefined,
             club: undefined,
+            rank: undefined,
         }
         const files = fs.readdirSync(__dirname).filter(
             filename => !filename.startsWith('index') && !filename.startsWith('base') && (filename.endsWith('.ts') || filename.endsWith('.js'))
