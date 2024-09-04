@@ -221,7 +221,7 @@ export default class ParameterService extends BaseService {
     // 加载配置
     async loadGameConfig(): Promise<IGameConfig> {
         const config: IGameConfig = {
-            club: {drawCountOpts: [], playerCountOpts: [], roomDiamond: 0}
+            club: {drawCountOpts: [], maxPlayerCountOpts: [], roomDiamond: 0, minPlayerCountOpts: []}
         }
         config.club = await ClubConfigModel.getClubConfig()
         pinus.app.set(GlobalEnum.gameConfigKey, config)

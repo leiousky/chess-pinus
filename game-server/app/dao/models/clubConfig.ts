@@ -4,8 +4,10 @@ import {Schema, model} from 'mongoose'
 export interface IClubConfig {
     // 局数选项
     drawCountOpts: number[]
-    // 人数选项
-    playerCountOpts: number[]
+    // 最多人数选项
+    maxPlayerCountOpts: number[]
+    // 最少人数选项
+    minPlayerCountOpts: number[]
     // 创建战队需要的钻石
     roomDiamond: number
 }
@@ -16,7 +18,11 @@ const schema = new Schema<IClubConfig>({
         type: [Number],
         default: []
     },
-    playerCountOpts: {
+    maxPlayerCountOpts: {
+        type: [Number],
+        default: [],
+    },
+    minPlayerCountOpts: {
         type: [Number],
         default: [],
     },
@@ -35,11 +41,17 @@ export class ClubConfigModel {
         const record = await clubConfigModel.findOne({})
         if (!record) {
             // 默认
-            return {drawCountOpts: [2, 4, 6, 8], playerCountOpts: [2, 3, 6, 9], roomDiamond: 0}
+            return {
+                drawCountOpts: [2, 4, 6, 8, 16],
+                maxPlayerCountOpts: [2, 3, 6, 9],
+                minPlayerCountOpts: [2, 3, 6, 9],
+                roomDiamond: 0,
+            }
         }
         return {
-            drawCountOpts: record.playerCountOpts,
-            playerCountOpts: record.playerCountOpts,
+            drawCountOpts: record.drawCountOpts,
+            maxPlayerCountOpts: record.maxPlayerCountOpts,
+            minPlayerCountOpts: record.minPlayerCountOpts,
             roomDiamond: record.roomDiamond
         }
     }
