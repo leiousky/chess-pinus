@@ -35,6 +35,7 @@ import {
 import {ClubCoinRecordModel, IClubCoinRecord} from "../models/clubCoinRecord";
 import {ClubRuleModel, IClubRule} from "../models/clubRule";
 import {IClubRuleInfo} from "../../types/interfaceApi";
+import {RpcApi} from "../../api/rpc";
 
 export class ClubManager {
     // 查找俱乐部
@@ -289,14 +290,27 @@ export class ClubManager {
         if (!targetMember) {
             return DissolveClubResp.error(errorCode.clubNotExists)
         }
-        const adminMember = await ClubMember.getClubMember(targetMember.m.clubShortId, uid)
+        const clubShortId = targetMember.m.clubShortId
+        const adminMember = await ClubMember.getClubMember(clubShortId, uid)
         if (!adminMember || !adminMember.hasAdminPermission()) {
             return DissolveClubResp.error(errorCode.noPermission)
+        }
+        // 检查是否存在房间
+        const rooms = await RpcApi.getClubRooms(targetMember.m.clubShortId)
+        if (rooms.length > 0) {
+            return DissolveClubResp.error(errorCode.dissolveRoomBeforeDissolveClub)
         }
         // 删除俱乐部
         const clubId = targetMember.m.clubId
         const club = await Club.getClubById(clubId)
         await club.remove()
+        const members = await ClubMemberModel.findMemberByClubShortId(clubShortId)
+        for (const member of members) {
+            const user = await UserModel.getUserByUid(member.memberUid)
+            if (user && user.frontendId) {
+                await PushApi.clubDissolve(user.uid, user.frontendId, clubShortId)
+            }
+        }
         // 删除所有成员
         await ClubMemberModel.deleteMembersByClubId(clubId)
         return DissolveClubResp.ok()

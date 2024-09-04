@@ -55,6 +55,8 @@ enum errorCode {
     canNotRemoveAdmin = 10008,
     // 不能删除战队主
     canNotRemoveCreator = 10009,
+    // 解散前先退出房间
+    dissolveRoomBeforeDissolveClub = 10010,
 }
 
 export default errorCode

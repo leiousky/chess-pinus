@@ -79,4 +79,11 @@ export class PushApi {
         const msg = {pushRouter: 'newClubRoom', clubShortId, roomList: roomInfo}
         await channelService.apushMessageByUids('ServerMessagePush', msg, [{uid: uid.toString(), sid}])
     }
+
+    // 俱乐部解散
+    static async clubDissolve(uid: number, sid: string, clubShortId: number) {
+        const channelService = pinus.app.get('channelService')
+        const msg = {pushRouter: 'clubDissolve', clubShortId}
+        await channelService.apushMessageByUids('ServerMessagePush', msg, [{uid: uid.toString(), sid}])
+    }
 }
