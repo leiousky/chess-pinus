@@ -101,7 +101,7 @@ export class Handler {
         const gameServer = dispatch(services.utils.getRandomNum(0, pinus.app.getServersByType('game').length - 1).toString(),
             pinus.app.getServersByType('game'))
         const userInfo = services.user.buildGameRoomUserInfo(model, -1, UserStatus.none, member.clubGold)
-        await RpcApi.createClubRoom(gameServer.id, userInfo, model.frontendId, rule)
+        await RpcApi.createClubRoom(gameServer.id, userInfo, model.frontendId, rule, ruleId)
         return CreateClubResp.ok()
     }
 

@@ -141,6 +141,8 @@ export interface IBaseRule {
     arenaId: string
     // 俱乐部 id
     clubShortId: number
+    // 俱乐部规则 id
+    clubRuleId: string
 }
 
 // 规则(所有类型的游戏规则)
@@ -160,6 +162,7 @@ export interface IGameRule {
     arenaId: string
     // 俱乐部 id
     clubShortId: number
+    clubRuleId: string
 }
 
 // 游戏配置
@@ -241,6 +244,8 @@ export interface IArenaRule {
 }
 
 export interface IClubRuleInfo {
+    // 规则 id
+    ruleId: string
     // 房间类型
     kind: number,
     // 钻石房费

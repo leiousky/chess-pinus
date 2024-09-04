@@ -1,7 +1,7 @@
 import {Application, FrontendSession} from 'pinus'
 import errorCode from '../../../constants/errorCode'
 import {checkToken, parseToken} from '../../../util/token'
-import {UserInfo} from '../../../types/connector/entry'
+import {EntryResp, UserInfo} from '../../../types/connector/entry'
 import {GateManager} from '../domain/manager'
 
 export default function (app: Application) {
@@ -17,17 +17,17 @@ export class Handler {
     /**
      * 登录大厅
      */
-    async entry(msg: any, session: FrontendSession) {
+    async entry(msg: any, session: FrontendSession): Promise<EntryResp> {
         // token
         const token: string = msg.token
         // 用户信息
         const userInfo: UserInfo = msg.userInfo
         if (!token) {
-            return {code: errorCode.systemErr}
+            return EntryResp.error(errorCode.systemErr)
         }
         const authInfo = parseToken(token)
         if (!checkToken(authInfo)) {
-            return {code: errorCode.invalidToken}
+            return EntryResp.error(errorCode.invalidToken)
         }
         const uid = authInfo.uid
         if (session.uid) {
