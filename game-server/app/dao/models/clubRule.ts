@@ -89,12 +89,12 @@ export class ClubRuleModel {
     // 新建规则
     static async addOrUpdateRule(ruleId: string, m: IClubRule) {
         // 更新
-        const result = await clubRuleModel.findByIdAndUpdate(ruleId, m)
-        if (!result) {
+        if (ruleId) {
+            return await clubRuleModel.findByIdAndUpdate(ruleId, m)
+        } else {
             // 新建
             return await clubRuleModel.create(m)
         }
-        return result
     }
 
     // 获取规则

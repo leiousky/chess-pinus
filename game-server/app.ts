@@ -45,7 +45,7 @@ app.before(async (routeRecord: RouteRecord, msg: any, session: FrontendOrBackend
     if (needNotLogin[routeRecord.route]) {
         return cb(null)
     }
-    console.log(`received route ${routeRecord.route}, msg ${msg}`)
+    console.log(`received route ${routeRecord.route}, msg ${JSON.stringify(msg)}`)
     if (!session.uid) {
         // 未登录
         cb(new Error('noLogin'))
