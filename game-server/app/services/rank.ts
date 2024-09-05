@@ -19,7 +19,7 @@ export default class RankService extends BaseService {
     async getRankWithRang(rankName: string, start: number, stop: number, withScore: boolean) {
         const client = pinus.app.get(GlobalEnum.redisLocalKey) as Redis
         if (withScore) {
-            const result = await client.zrevrange(rankName, start, stop, 'WITHSCORES')
+            return await client.zrevrange(rankName, start, stop, 'WITHSCORES')
         } else {
             return await client.zrevrange(rankName, start, stop)
         }
